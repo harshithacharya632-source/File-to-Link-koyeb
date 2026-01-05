@@ -3,30 +3,36 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FileStreamBot | {{file_name}}</title>
 
-    <link rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png" type="image/x-icon">
-    <link rel="shortcut icon" href="https://i.ibb.co/Hh4kF2b/icon.png" type="image/x-icon">
+    <link rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png">
+    <link rel="shortcut icon" href="https://i.ibb.co/Hh4kF2b/icon.png">
 
     <link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- ✅ FORCE BUTTONS VISIBLE ON MOBILE -->
+    <!-- ✅ FORCE BUTTON VISIBILITY (FIXED FOREVER) -->
     <style>
-        .downloadBtn {
-            display: flex !important;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
+        .downloadBtn,
+        .downloadBtn button,
+        .downloadBtn .magnet {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 9999 !important;
+        }
+
+        @media (max-width: 768px) {
+            .downloadBtn {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -35,83 +41,76 @@
 
 <nav>
     <div class="nleft">
-        <a href="#">
-            <h3 id="heading" style="z-index: 100;" class="magnet title">FILE STREAM</h3>
-        </a>
+        <h3 class="magnet title">FILE STREAM</h3>
     </div>
     <div class="nryt">
         <a class="home-btn magnet" href="#main">HOME</a>
-        <a href="#abtus" class="about-btn magnet">ABOUT</a>
+        <a class="about-btn magnet" href="#abtus">ABOUT</a>
     </div>
 </nav>
 
-<center>
-    <div class="about-nav">
-        <a href="#abtus" class="wlcm magnet">WELCOME</a>
-        <a href="#channels" class="abt-chnl magnet">CHANNELS</a>
-        <a href="#contact" class="magnet contact-btn">CONTACT</a>
-    </div>
-</center>
-
 <div class="outer">
-    <div class="inner">
+<div class="inner">
 
-        <div class="main" id="main">
-            <video id="player" class="player" src="{{file_url}}" playsinline controls width="100%"></video>
+<div class="main" id="main">
+    <!-- ✅ WEB PLAYER -->
+    <video id="player" class="player" src="{{file_url}}" playsinline controls width="100%"></video>
 
-            <div class="file-name">
-                <h4 style="display:inline;">File Name: </h4>
-                <p style="display:inline;">{{file_name}}</p><br>
-                <h4 style="display:inline;">File Size: </h4>
-                <p style="display:inline;">{{file_size}}</p>
-            </div>
+    <div class="file-name">
+        <h4>File Name:</h4> {{file_name}} <br>
+        <h4>File Size:</h4> {{file_size}}
+    </div>
 
-            <!-- ✅ ONLY REQUIRED BUTTONS -->
-            <div class="downloadBtn">
+    <!-- ✅ BUTTONS -->
+    <div class="downloadBtn">
 
-                <button class="magnet" onclick="copyStreamLink()">
-                    <img src="https://i.ibb.co/CM4Y586/link.png" alt=""> copy link
-                </button>
+        <button class="magnet" onclick="copyLink()">
+            🔗 Copy Link
+        </button>
 
-                <button class="magnet" onclick="vlc_player()">
-                    <img src="https://i.ibb.co/px6fQs1/vlc.png" alt=""> VLC PLAYER
-                </button>
+        <button class="magnet" onclick="playMX()">
+            ▶ MX Player
+        </button>
 
-                <button class="magnet" onclick="mx_player()">
-                    <img src="https://i.ibb.co/41WvtQ3/mx.png" alt=""> MX PLAYER
-                </button>
-
-            </div>
-        </div>
+        <button class="magnet" onclick="playVLC()">
+            ▶ VLC Player
+        </button>
 
     </div>
 </div>
 
+</div>
+</div>
+
+<footer class="p-4 text-center text-sm text-gray-400">
+    © 2025 <a href="https://t.me/trendi_Backup">Goflix</a>. All Rights Reserved
+</footer>
+
 <script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
 
-<!-- ❌ REMOVE OLD BROKEN SCRIPT -->
-<!-- <script src="https://proavipatil.github.io/data/fs/src/script.js"></script> -->
-
-<!-- ✅ WORKING PLAYER LOGIC -->
 <script>
     new Plyr('#player');
 
     const FILE_ID = "{{file_id}}";
-    const BASE_URL = window.location.origin;
+    const BASE = window.location.origin;
+    const STREAM = `${BASE}/dl/${FILE_ID}`;
 
-    function copyStreamLink() {
-        navigator.clipboard.writeText(`${BASE_URL}/watch/${FILE_ID}`);
-        alert("Link copied!");
+    function copyLink() {
+        navigator.clipboard.writeText(`${BASE}/watch/${FILE_ID}`);
+        alert("Link copied");
     }
 
-    function vlc_player() {
-        window.location.href = `vlc://${BASE_URL}/dl/${FILE_ID}`;
+    // ✅ MX PLAYER (NO PLAY STORE)
+    function playMX() {
+        window.location.href = STREAM;
     }
 
-    function mx_player() {
-        window.location.href =
-            `intent://${BASE_URL.replace("https://", "")}/dl/${FILE_ID}` +
-            `#Intent;package=com.mxtech.videoplayer.ad;end`;
+    // ✅ VLC PLAYER (SAFE FALLBACK)
+    function playVLC() {
+        window.location.href = `vlc://${STREAM}`;
+        setTimeout(() => {
+            window.location.href = STREAM;
+        }, 1200);
     }
 </script>
 
