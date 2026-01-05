@@ -18,146 +18,102 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ✅ FORCE BUTTONS VISIBLE ON MOBILE -->
+    <style>
+        .downloadBtn {
+            display: flex !important;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <nav>
-        <div class="nleft">
-            <a href="#">
-                <h3 id="heading" style="z-index:100;" class="magnet title">FILE STREAM</h3>
-            </a>
-        </div>
-        <div class="nryt">
-            <a class="home-btn magnet" href="#main">HOME</a>
-            <a href="#abtus" class="about-btn magnet">ABOUT</a>
-        </div>
-    </nav>
-
-    <center>
-        <div class="about-nav">
-            <a href="#abtus" class="wlcm magnet">WELCOME</a>
-            <a href="#channels" class="abt-chnl magnet">CHANNELS</a>
-            <a href="#contact" class="magnet contact-btn">CONTACT</a>
-        </div>
-    </center>
-
-    <div class="outer">
-        <div class="inner">
-
-            <div class="main" id="main">
-                <video id="player" class="player" src="{{file_url}}" playsinline controls width="100%"></video>
-
-                <div class="file-name">
-                    <h4 style="display:inline;">File Name: </h4>
-                    <p style="display:inline;">{{file_name}}</p><br>
-                    <h4 style="display:inline;">File Size: </h4>
-                    <p style="display:inline;">{{file_size}}</p>
-                </div>
-
-                <div class="downloadBtn">
-                    <button class="magnet" onclick="streamDownload()">
-                        <img style="height:30px;" src="https://i.ibb.co/RjzYttX/dl.png"> download video
-                    </button>
-
-                    <button class="magnet" onclick="copyStreamLink()">
-                        <img src="https://i.ibb.co/CM4Y586/link.png"> copy link
-                    </button>
-
-                    <button class="magnet" onclick="vlc_player()">
-                        <img src="https://i.ibb.co/px6fQs1/vlc.png"> watch in VLC PLAYER
-                    </button>
-
-                    <button class="magnet" onclick="mx_player()">
-                        <img src="https://i.ibb.co/41WvtQ3/mx.png"> watch in MX PLAYER
-                    </button>
-
-                    <button class="magnet" onclick="n_player()">
-                        <img src="https://i.ibb.co/Hd2dS4t/nPlayer.png"> watch in nPlayer
-                    </button>
-                </div>
-            </div>
-
-            <div class="abt">
-                <div class="about">
-                    <div class="about-dets">
-
-                        <div class="abt-sec" id="abtus" style="padding:160px 30px;">
-                            <h1 style="text-align:center;">WELCOME TO OUR <span>FILE STREAM</span> BOT</h1>
-                            <p style="text-align:center;">
-                                Stream Movies & Series directly from Telegram.
-                            </p>
-                        </div>
-
-                        <div class="abt-sec" id="channels">
-                            <h1>JOIN OUR <span>TELEGRAM</span> CHANNELS</h1>
-                            <div class="links chnl-link">
-                                <a class="magnet" href="https://t.me/trendi_Backup">
-                                    <button>GOFLIX</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="abt-sec" id="contact">
-                            <p style="text-align:center;">Contact us on Telegram</p>
-                            <div class="links contact">
-                                <a href="https://t.me/trendi_Backup">
-                                    <button>CONTACT</button>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <footer>
-            <center>
-                <div class="copyright">
-                    <h5>Copyright © 2024
-                        <a href="https://t.me/trendi_Backup">Goflix</a>
-                        . All Rights Reserved.
-                    </h5>
-                </div>
-            </center>
-        </footer>
+<nav>
+    <div class="nleft">
+        <a href="#">
+            <h3 id="heading" style="z-index: 100;" class="magnet title">FILE STREAM</h3>
+        </a>
     </div>
+    <div class="nryt">
+        <a class="home-btn magnet" href="#main">HOME</a>
+        <a href="#abtus" class="about-btn magnet">ABOUT</a>
+    </div>
+</nav>
 
-    <!-- REQUIRED SCRIPTS -->
-    <script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
+<center>
+    <div class="about-nav">
+        <a href="#abtus" class="wlcm magnet">WELCOME</a>
+        <a href="#channels" class="abt-chnl magnet">CHANNELS</a>
+        <a href="#contact" class="magnet contact-btn">CONTACT</a>
+    </div>
+</center>
 
-    <!-- ✅ WORKING PLAYER LOGIC -->
-    <script>
-        new Plyr('#player');
+<div class="outer">
+    <div class="inner">
 
-        const FILE_ID = "{{file_id}}";
-        const BASE_URL = window.location.origin;
+        <div class="main" id="main">
+            <video id="player" class="player" src="{{file_url}}" playsinline controls width="100%"></video>
 
-        function streamDownload() {
-            window.location.href = `${BASE_URL}/dl/${FILE_ID}`;
-        }
+            <div class="file-name">
+                <h4 style="display:inline;">File Name: </h4>
+                <p style="display:inline;">{{file_name}}</p><br>
+                <h4 style="display:inline;">File Size: </h4>
+                <p style="display:inline;">{{file_size}}</p>
+            </div>
 
-        function copyStreamLink() {
-            navigator.clipboard.writeText(`${BASE_URL}/watch/${FILE_ID}`);
-            alert("Link copied!");
-        }
+            <!-- ✅ ONLY REQUIRED BUTTONS -->
+            <div class="downloadBtn">
 
-        function vlc_player() {
-            window.location.href = `vlc://${BASE_URL}/dl/${FILE_ID}`;
-        }
+                <button class="magnet" onclick="copyStreamLink()">
+                    <img src="https://i.ibb.co/CM4Y586/link.png" alt=""> copy link
+                </button>
 
-        function mx_player() {
-            window.location.href =
-                `intent://${BASE_URL.replace("https://", "")}/dl/${FILE_ID}` +
-                `#Intent;package=com.mxtech.videoplayer.ad;end`;
-        }
+                <button class="magnet" onclick="vlc_player()">
+                    <img src="https://i.ibb.co/px6fQs1/vlc.png" alt=""> VLC PLAYER
+                </button>
 
-        function n_player() {
-            window.location.href = `nplayer://${BASE_URL}/dl/${FILE_ID}`;
-        }
-    </script>
+                <button class="magnet" onclick="mx_player()">
+                    <img src="https://i.ibb.co/41WvtQ3/mx.png" alt=""> MX PLAYER
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
+
+<!-- ❌ REMOVE OLD BROKEN SCRIPT -->
+<!-- <script src="https://proavipatil.github.io/data/fs/src/script.js"></script> -->
+
+<!-- ✅ WORKING PLAYER LOGIC -->
+<script>
+    new Plyr('#player');
+
+    const FILE_ID = "{{file_id}}";
+    const BASE_URL = window.location.origin;
+
+    function copyStreamLink() {
+        navigator.clipboard.writeText(`${BASE_URL}/watch/${FILE_ID}`);
+        alert("Link copied!");
+    }
+
+    function vlc_player() {
+        window.location.href = `vlc://${BASE_URL}/dl/${FILE_ID}`;
+    }
+
+    function mx_player() {
+        window.location.href =
+            `intent://${BASE_URL.replace("https://", "")}/dl/${FILE_ID}` +
+            `#Intent;package=com.mxtech.videoplayer.ad;end`;
+    }
+</script>
 
 </body>
 </html>
