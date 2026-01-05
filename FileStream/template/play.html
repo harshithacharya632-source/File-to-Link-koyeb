@@ -4,87 +4,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FileStreamBot | {{file_name}}</title>
+<title>Goflix Stream | {{file_name}}</title>
 
 <link rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png">
 
-<link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- ✅ FIX VISIBILITY + CENTER ICON/TEXT + SIZE -->
 <style>
-.downloadBtn,
-.downloadBtn button {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 12px;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
+/* ===== GLOBAL ===== */
+body {
+    background:#0b0b0b;
+    color:#e5e5e5;
+    font-family: system-ui, sans-serif;
 }
 
-.downloadBtn {
-    flex-direction: column;
-    margin-top: 18px;
+/* ===== HEADER ===== */
+.goflix-title {
+    text-align:center;
+    font-size:38px;
+    font-weight:900;
+    color:#ff2a2a;
+    margin:18px 0 10px;
+    letter-spacing:2px;
+    animation:pulse 1.6s infinite;
 }
 
-.downloadBtn button {
-    padding: 16px 20px;
-    font-size: 17px;
-    border-radius: 14px;
+@keyframes pulse {
+    0% { text-shadow:0 0 10px #ff2a2a; }
+    50% { text-shadow:0 0 30px #ff2a2a; }
+    100% { text-shadow:0 0 10px #ff2a2a; }
 }
 
-.downloadBtn img {
-    height: 30px;
-    width: 30px;
+/* ===== PLAYER ===== */
+.player-box {
+    max-width:960px;
+    margin:auto;
+}
+
+/* ===== FILE INFO ===== */
+.file-card {
+    background:#1a1a1a;
+    padding:14px;
+    border-radius:14px;
+    margin:12px auto;
+    max-width:960px;
+}
+
+/* ===== BUTTONS ===== */
+.action-box {
+    display:flex !important;
+    flex-direction:column;
+    gap:14px;
+    max-width:420px;
+    margin:18px auto;
+}
+
+.action-box button {
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    padding:16px;
+    font-size:18px;
+    border-radius:16px;
+    background:#1f1f1f;
+    color:#fff;
+    border:1px solid #333;
+}
+
+.action-box img {
+    height:32px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align:center;
+    font-size:14px;
+    color:#888;
+    margin:30px 0;
 }
 </style>
 </head>
 
 <body>
 
-<div class="outer">
-<div class="inner">
+<div class="goflix-title">GOFLIX STREAM</div>
 
-<div class="main" id="main">
-    <!-- WEB PLAYER -->
-    <video id="player" class="player" src="{{file_url}}" playsinline controls width="100%"></video>
-
-    <div class="file-name">
-        <b>File Name:</b> {{file_name}} <br>
-        <b>File Size:</b> {{file_size}}
-    </div>
-
-    <!-- BUTTONS -->
-    <div class="downloadBtn">
-
-        <button onclick="copyLink()">
-            <img src="https://i.ibb.co/CM4Y586/link.png">
-            COPY LINK
-        </button>
-
-        <button onclick="openMX()">
-            <img src="https://i.ibb.co/41WvtQ3/mx.png">
-            MX PLAYER
-        </button>
-
-        <button onclick="openVLC()">
-            <img src="https://i.ibb.co/px6fQs1/vlc.png">
-            VLC PLAYER
-        </button>
-
-    </div>
+<div class="player-box">
+    <video id="player" src="{{file_url}}" controls playsinline width="100%"></video>
 </div>
 
-</div>
+<div class="file-card">
+    <b>File Name:</b> {{file_name}} <br>
+    <b>File Size:</b> {{file_size}}
 </div>
 
-<footer class="p-4 text-center text-sm text-gray-400">
+<div class="action-box">
+    <button onclick="copyLink()">
+        <img src="https://i.ibb.co/CM4Y586/link.png">
+        COPY LINK
+    </button>
+
+    <button onclick="openMX()">
+        <img src="https://i.ibb.co/41WvtQ3/mx.png">
+        MX PLAYER
+    </button>
+
+    <button onclick="openVLC()">
+        <img src="https://i.ibb.co/px6fQs1/vlc.png">
+        VLC PLAYER
+    </button>
+</div>
+
+<div class="footer">
     © 2025 Goflix. All Rights Reserved
-</footer>
+</div>
 
 <script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
 
@@ -93,27 +128,25 @@ new Plyr('#player');
 
 const FILE_ID = "{{file_id}}";
 const BASE = window.location.origin;
+const STREAM = `${BASE}/dl/${FILE_ID}`;
 
-// ✅ URL ENCODE FIX (THIS STOPS 404)
-const STREAM_URL = `${BASE}/dl/${encodeURIComponent(FILE_ID)}`;
-
-// COPY LINK
+/* COPY LINK */
 function copyLink() {
-    navigator.clipboard.writeText(`${BASE}/watch/${encodeURIComponent(FILE_ID)}`);
+    navigator.clipboard.writeText(`${BASE}/watch/${FILE_ID}`);
     alert("Link copied");
 }
 
-// MX PLAYER (FASTEST + RELIABLE)
+/* MX PLAYER (NO 404) */
 function openMX() {
-    window.location.href = STREAM_URL;
+    window.location.href = STREAM;
 }
 
-// VLC PLAYER (SCHEME + FALLBACK)
+/* VLC PLAYER (SAFE) */
 function openVLC() {
-    window.location.href = `vlc://${STREAM_URL}`;
+    window.location.href = `vlc://${STREAM}`;
     setTimeout(() => {
-        window.location.href = STREAM_URL;
-    }, 1000);
+        window.location.href = STREAM;
+    }, 1200);
 }
 </script>
 
