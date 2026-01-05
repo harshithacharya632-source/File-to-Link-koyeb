@@ -2,78 +2,87 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FileStreamBot | {{file_name}}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileStreamBot | {{file_name}}</title>
 
-    <link rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png">
-    <link rel="shortcut icon" href="https://i.ibb.co/Hh4kF2b/icon.png">
+<link rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png">
 
-    <link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
+<link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<!-- FORCE VISIBILITY + BIGGER BUTTONS -->
+<style>
+.downloadBtn,
+.downloadBtn button,
+.downloadBtn .magnet {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 9999 !important;
+}
 
-    <!-- ✅ FORCE BUTTON VISIBILITY (FIXED FOREVER) -->
-    <style>
-        .downloadBtn,
-        .downloadBtn button,
-        .downloadBtn .magnet {
-            display: inline-flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            z-index: 9999 !important;
-        }
+.downloadBtn {
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 18px;
+    justify-content: center;
+}
 
-        @media (max-width: 768px) {
-            .downloadBtn {
-                display: flex !important;
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-        }
-    </style>
+.downloadBtn button {
+    padding: 14px 22px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.downloadBtn img {
+    height: 28px;
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .downloadBtn {
+        flex-direction: column;
+    }
+}
+</style>
 </head>
 
 <body>
-
-<nav>
-    <div class="nleft">
-        <h3 class="magnet title">FILE STREAM</h3>
-    </div>
-    <div class="nryt">
-        <a class="home-btn magnet" href="#main">HOME</a>
-        <a class="about-btn magnet" href="#abtus">ABOUT</a>
-    </div>
-</nav>
 
 <div class="outer">
 <div class="inner">
 
 <div class="main" id="main">
-    <!-- ✅ WEB PLAYER -->
+    <!-- WEB PLAYER -->
     <video id="player" class="player" src="{{file_url}}" playsinline controls width="100%"></video>
 
     <div class="file-name">
-        <h4>File Name:</h4> {{file_name}} <br>
-        <h4>File Size:</h4> {{file_size}}
+        <b>File Name:</b> {{file_name}} <br>
+        <b>File Size:</b> {{file_size}}
     </div>
 
-    <!-- ✅ BUTTONS -->
+    <!-- BUTTONS -->
     <div class="downloadBtn">
 
+        <!-- COPY LINK -->
         <button class="magnet" onclick="copyLink()">
-            🔗 Copy Link
+            <img src="https://i.ibb.co/CM4Y586/link.png">
+            Copy Link
         </button>
 
-        <button class="magnet" onclick="playMX()">
-            ▶ MX Player
+        <!-- MX PLAYER -->
+        <button class="magnet" onclick="openMX()">
+            <img src="https://i.ibb.co/41WvtQ3/mx.png">
+            MX Player
         </button>
 
-        <button class="magnet" onclick="playVLC()">
-            ▶ VLC Player
+        <!-- VLC PLAYER -->
+        <button class="magnet" onclick="openVLC()">
+            <img src="https://i.ibb.co/px6fQs1/vlc.png">
+            VLC Player
         </button>
 
     </div>
@@ -89,29 +98,30 @@
 <script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
 
 <script>
-    new Plyr('#player');
+new Plyr('#player');
 
-    const FILE_ID = "{{file_id}}";
-    const BASE = window.location.origin;
-    const STREAM = `${BASE}/dl/${FILE_ID}`;
+const FILE_ID = "{{file_id}}";
+const BASE = window.location.origin;
+const STREAM_URL = `${BASE}/dl/${FILE_ID}`;
 
-    function copyLink() {
-        navigator.clipboard.writeText(`${BASE}/watch/${FILE_ID}`);
-        alert("Link copied");
-    }
+// COPY LINK
+function copyLink() {
+    navigator.clipboard.writeText(`${BASE}/watch/${FILE_ID}`);
+    alert("Link copied");
+}
 
-    // ✅ MX PLAYER (NO PLAY STORE)
-    function playMX() {
-        window.location.href = STREAM;
-    }
+// MX PLAYER (NO 404, NO PLAY STORE)
+function openMX() {
+    window.location.href = STREAM_URL;
+}
 
-    // ✅ VLC PLAYER (SAFE FALLBACK)
-    function playVLC() {
-        window.location.href = `vlc://${STREAM}`;
-        setTimeout(() => {
-            window.location.href = STREAM;
-        }, 1200);
-    }
+// VLC PLAYER (SAFE FALLBACK)
+function openVLC() {
+    window.location.href = `vlc://${STREAM_URL}`;
+    setTimeout(() => {
+        window.location.href = STREAM_URL;
+    }, 1200);
+}
 </script>
 
 </body>
