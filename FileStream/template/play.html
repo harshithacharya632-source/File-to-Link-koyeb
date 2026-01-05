@@ -13,39 +13,33 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- FORCE VISIBILITY + BIGGER BUTTONS -->
+<!-- ✅ FIX VISIBILITY + CENTER ICON/TEXT + SIZE -->
 <style>
 .downloadBtn,
-.downloadBtn button,
-.downloadBtn .magnet {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 9999 !important;
+.downloadBtn button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
 }
 
 .downloadBtn {
-    flex-wrap: wrap;
-    gap: 14px;
+    flex-direction: column;
     margin-top: 18px;
-    justify-content: center;
 }
 
 .downloadBtn button {
-    padding: 14px 22px;
-    font-size: 16px;
-    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 17px;
+    border-radius: 14px;
 }
 
 .downloadBtn img {
-    height: 28px;
-    margin-right: 8px;
-}
-
-@media (max-width: 768px) {
-    .downloadBtn {
-        flex-direction: column;
-    }
+    height: 30px;
+    width: 30px;
 }
 </style>
 </head>
@@ -67,22 +61,19 @@
     <!-- BUTTONS -->
     <div class="downloadBtn">
 
-        <!-- COPY LINK -->
-        <button class="magnet" onclick="copyLink()">
+        <button onclick="copyLink()">
             <img src="https://i.ibb.co/CM4Y586/link.png">
-            Copy Link
+            COPY LINK
         </button>
 
-        <!-- MX PLAYER -->
-        <button class="magnet" onclick="openMX()">
+        <button onclick="openMX()">
             <img src="https://i.ibb.co/41WvtQ3/mx.png">
-            MX Player
+            MX PLAYER
         </button>
 
-        <!-- VLC PLAYER -->
-        <button class="magnet" onclick="openVLC()">
+        <button onclick="openVLC()">
             <img src="https://i.ibb.co/px6fQs1/vlc.png">
-            VLC Player
+            VLC PLAYER
         </button>
 
     </div>
@@ -92,7 +83,7 @@
 </div>
 
 <footer class="p-4 text-center text-sm text-gray-400">
-    © 2025 <a href="https://t.me/trendi_Backup">Goflix</a>. All Rights Reserved
+    © 2025 Goflix. All Rights Reserved
 </footer>
 
 <script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
@@ -102,25 +93,27 @@ new Plyr('#player');
 
 const FILE_ID = "{{file_id}}";
 const BASE = window.location.origin;
-const STREAM_URL = `${BASE}/dl/${FILE_ID}`;
+
+// ✅ URL ENCODE FIX (THIS STOPS 404)
+const STREAM_URL = `${BASE}/dl/${encodeURIComponent(FILE_ID)}`;
 
 // COPY LINK
 function copyLink() {
-    navigator.clipboard.writeText(`${BASE}/watch/${FILE_ID}`);
+    navigator.clipboard.writeText(`${BASE}/watch/${encodeURIComponent(FILE_ID)}`);
     alert("Link copied");
 }
 
-// MX PLAYER (NO 404, NO PLAY STORE)
+// MX PLAYER (FASTEST + RELIABLE)
 function openMX() {
     window.location.href = STREAM_URL;
 }
 
-// VLC PLAYER (SAFE FALLBACK)
+// VLC PLAYER (SCHEME + FALLBACK)
 function openVLC() {
     window.location.href = `vlc://${STREAM_URL}`;
     setTimeout(() => {
         window.location.href = STREAM_URL;
-    }, 1200);
+    }, 1000);
 }
 </script>
 
